@@ -1,13 +1,13 @@
- x = 0;
- y = 0;
+ x = 58;
+ y = 100;
  z = x
  var newElement = 0
  currentInterval = null; // Track the currently active interval
 tracker = null
-obje = document.getElementById("d");
-obje2 = document.getElementById("b");
-obje3 = document.getElementById("a");
-obje4 = document.getElementById("c");
+obje = document.getElementById("a"); // head 
+b = document.getElementById("b");
+c = document.getElementById("c");
+d = document.getElementById("d");
 
 
 
@@ -21,19 +21,19 @@ document.addEventListener("keydown", (e) => {
     if(gameon === true){
         switch (e.key) {
             case "ArrowUp":
-                tracker = "up"
+                tracker = "UP"
                 currentInterval = setInterval(movementTop, 5);
                 break;
             case "ArrowDown":
-                tracker = "down"
+                tracker = "DOWN"
                 currentInterval = setInterval(movementDown, 5);
                 break;
             case "ArrowRight":
-                tracker = "right"
+                tracker = "RIGHT"
                 currentInterval = setInterval(movementRight, 5);
                 break;
             case "ArrowLeft":
-                tracker = "left"
+                tracker = "LEFT"
                 currentInterval = setInterval(movementLeft, 5);
                 break;
         }
@@ -41,21 +41,111 @@ document.addEventListener("keydown", (e) => {
 });
  var apple = document.getElementById("img")
  var computedStyle = window.getComputedStyle(apple);
-
   Left  = parseInt(computedStyle.left.slice(0,-2))
   Top  = parseInt(computedStyle.top.slice(0,-2))
  
- head = obje
- arr = [obje2,obje3,obje4]
- /*
- for(i=0; i<= arr.length i++){
-    
- }
+ 
+ dict = {b:"RIGHT",c:"RIGHT",d:"RIGHT"} // make this a dictonary to store last movement
+ lenDict = Object.keys(dict)
 
- */
+
  function movementTop() {
     y--;
-    if( newElement>0 && tracker == "up"){
+    obje.style.top=`${y}px`;
+
+    for(let i=0; i<=lenDict.length-1; i++){
+
+        section = document.getElementById(lenDict[i])
+        nextsection = document.getElementById(lenDict[i-1])
+        head = window.getComputedStyle(obje)
+        sectioninfo = window.getComputedStyle(document.getElementById(lenDict[i]))
+
+            switch(dict[lenDict[i]]){
+                case "UP":
+                    if(i==0){
+                        if(tracker == "UP"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+
+                        else if(tracker == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (tracker == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                    }
+
+                    else{
+                        nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
+                        if(dict[lenDict[i]-1] == "UP"){
+                            if(sectioninfo.left != nextsection.left){sectioninfo.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+
+                        else if(dict[lenDict[i]-1] == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (dict[lenDict[i]-1] == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                        
+
+                        }
+                    break;
+
+                case "RIGHT":
+                    if(i==0){
+                        if(tracker == "UP"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+
+                        else if(tracker == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (tracker == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                    }
+                    else{
+                        nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
+                        
+                        if(dict[lenDict[i-1]] == "UP"){
+                            console.log(`${sectioninfo.left} VS ${nextsectioninfo.left}`)
+                            if(sectioninfo.left != nextsectioninfo.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+
+                        else if(dict[lenDict[i-1]] == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (dict[lenDict[i-1]] == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                        
+
+                        }
+                    break;
+              }
+            }
+        }
+            
+              
+             
+           
+    
+        /** arr[i].style.top= window.getComputedStyle(obje).top}
+        else{arr[i].style.top = window.getComputedStyle(arr[i+1]).top} */
+
+    
+
+   /* 
+ if( newElement>0 && tracker == "up"){
         //z++
         arr[newElement-1].style.top = `${y}px`; arr[newElement].style.left= `${x}px`;
         console.log(`${arr[newElement-1].style.left}: 1 ${arr[newElement].style.left}:2`)
@@ -64,13 +154,11 @@ document.addEventListener("keydown", (e) => {
         else {arr[0].style.top = `${y}px`;}
         arr[newElement].style.top = `${y-15}px`;
     
-    //for(ar of arr ){ar.style.top=`${y}px`}
     rect = obje.getBoundingClientRect();
-    //console.log(`${y}: Y ${x}: X`)
     newX = Math.floor(Math.random() * 1000)
-    newY = Math.floor(Math.random() * 1000) 
+    newY = Math.floor(Math.random() * 1000)
 
-    if(y <= Top +10 && y >= Top - 10 && x<= Left +20  && x>=Left -20){
+   if(y <= Top +10 && y >= Top - 10 && x<= Left +20  && x>=Left -20){
 
         Left = newX
         Top = newY
@@ -88,40 +176,128 @@ document.addEventListener("keydown", (e) => {
         document.body.appendChild(m);}
 
     if(rect.top === 0){clearInterval(currentInterval); gameon = false; location.reload();}
+   
+   */
     
-}
+
 
 function movementDown() {
     y++;
-    for(ar of arr ){ar.style.top=`${y}px`}
+    obje.style.top=`${y}px`
 
+    /* 
     rect = obje.getBoundingClientRect();
     if(y <=120 && y >=80 && x<=120 && x>=80){document.createElement("p")}; 
     if(rect.top === 1050){clearInterval(currentInterval); gameon = false}
-    
+    */
 }
 
 function movementRight() {
     x++;
-    for(ar of arr ){
+    obje.style.left=`${x}px`
+    for(let i=0; i<=lenDict.length-1; i++){
+        
+        section = document.getElementById(lenDict[i])
+        nextsection = document.getElementById(lenDict[i-1])
+        head = window.getComputedStyle(obje)
+        sectioninfo = window.getComputedStyle(document.getElementById(lenDict[i]))
+
+            switch(dict[lenDict[i]]){
+                case "UP":
+                    if(i==0){
+                        if(tracker == "UP"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        
+
+                        else if(tracker == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (tracker == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                    }
+                    else{
+                        nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
+
+                        if(dict[lenDict[i-1]] == "UP"){
+                            console.log("IT IS UP")
+                            if(sectioninfo.left != nextsection.left){sectioninfo.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+
+                        else if(dict[lenDict[i-1]] == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (dict[lenDict[i-1]] == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                        
+
+                        }
+                    break;
+
+                case "RIGHT":
+                    if(i==0){
+                        if(tracker == "UP"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+
+                        else if(tracker == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (tracker == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                    }
+                    else{
+                        nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
+                        if(dict[lenDict[i-1]] == "UP"){
+                            if(sectioninfo.left != nextsection.left){sectioninfo.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                        }
+
+                        else if(dict[lenDict[i-1]] == "DOWN"){
+                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                        }
+                        else if (dict[lenDict[i-1]] == "RIGHT"){
+                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                        }
+                        
+
+                        }
+                    break;
+              }
+            }
+
+    /**
+     * for(ar of arr ){
         newAr = window.getComputedStyle(ar)
-        //console.log(newAr)
         ar.style.left = parseInt(newAr.left.slice(0,-2)) + 1 + "px";}
 
     rect = obje.getBoundingClientRect();
     if(y <=120 && y >=80 && x<=120 && x>=80){document.createElement("p")}; 
     if(rect.left === 1110){clearInterval(currentInterval); gameon = false}
+     * 
+     */
+    
 
 }
 
 function movementLeft() {
-    rect = obje.getBoundingClientRect();
-    if(rect.left === 0){clearInterval(currentInterval); gameon = false}
+   // rect = obje.getBoundingClientRect();
+   // if(rect.left === 0){clearInterval(currentInterval); gameon = false}
     x--;
-    for(ar of arr ){ar.style.left=`${x}px`}
+    obje.style.left=`${x}px`
     
     
-    if(y <=120 && y >=80 && x<=120 && x>=80){document.createElement("p")}
+    
 
     
     
