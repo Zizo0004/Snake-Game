@@ -1,5 +1,5 @@
  x = 58;
- y = 100;
+ y = 150;
  z = x
  var newElement = 0
  currentInterval = null; // Track the currently active interval
@@ -10,7 +10,11 @@ c = document.getElementById("c");
 d = document.getElementById("d");
 
 
+// READ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! /// 
 
+// make every movement take one space of a block, instead of 1 px moving up,right,down,left it moves a whole block's worth. this prevents any overriding issues // 
+
+// READ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
 
 //obje.style.position = "absolute";
 var rect = null
@@ -22,15 +26,15 @@ document.addEventListener("keydown", (e) => {
         switch (e.key) {
             case "ArrowUp":
                 tracker = "UP"
-                currentInterval = setInterval(movementTop, 5);
+                currentInterval = setInterval(movementTop, 125);
                 break;
             case "ArrowDown":
                 tracker = "DOWN"
-                currentInterval = setInterval(movementDown, 5);
+                currentInterval = setInterval(movementDown, 25);
                 break;
             case "ArrowRight":
                 tracker = "RIGHT"
-                currentInterval = setInterval(movementRight, 5);
+                currentInterval = setInterval(movementRight, 125);
                 break;
             case "ArrowLeft":
                 tracker = "LEFT"
@@ -50,7 +54,7 @@ document.addEventListener("keydown", (e) => {
 
 
  function movementTop() {
-    y--;
+    y = y - 14;
     obje.style.top=`${y}px`;
 
     for(let i=0; i<=lenDict.length-1; i++){
@@ -76,19 +80,19 @@ document.addEventListener("keydown", (e) => {
                             section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
                         }
                     }
-
+                    
                     else{
                         nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
-                        if(dict[lenDict[i]-1] == "UP"){
-                            if(sectioninfo.left != nextsection.left){sectioninfo.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                        if(dict[lenDict[i-1]] == "UP"){
+                            if(sectioninfo.left != nextsectioninfo.left){console.log(`${sectioninfo.left} VS ${nextsectioninfo.left}`);section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
                             else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
                         }
 
-                        else if(dict[lenDict[i]-1] == "DOWN"){
-                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                        else if(dict[lenDict[i-1]] == "DOWN"){
+                            if(sectioninfo.left != nextsectioninfo.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
                             else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
                         }
-                        else if (dict[lenDict[i]-1] == "RIGHT"){
+                        else if (dict[lenDict[i-1]] == "RIGHT"){
                             section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
                         }
                         
@@ -113,11 +117,9 @@ document.addEventListener("keydown", (e) => {
                     }
                     else{
                         nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
-                        
                         if(dict[lenDict[i-1]] == "UP"){
-                            console.log(`${sectioninfo.left} VS ${nextsectioninfo.left}`)
                             if(sectioninfo.left != nextsectioninfo.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
-                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
+                            else{section.style.top =`${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`;dict[lenDict[i]] = "UP"}
                         }
 
                         else if(dict[lenDict[i-1]] == "DOWN"){
@@ -182,7 +184,7 @@ document.addEventListener("keydown", (e) => {
 
 
 function movementDown() {
-    y++;
+    y = y + 14;
     obje.style.top=`${y}px`
 
     /* 
@@ -213,27 +215,28 @@ function movementRight() {
 
                         else if(tracker == "DOWN"){
                             if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
-                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "DOWN"}
                         }
                         else if (tracker == "RIGHT"){
-                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                            if(sectioninfo.top != head.top){section.style.top = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`}
+                            else{section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "RIGHT"}
                         }
                     }
                     else{
                         nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
 
                         if(dict[lenDict[i-1]] == "UP"){
-                            console.log("IT IS UP")
-                            if(sectioninfo.left != nextsection.left){sectioninfo.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            if(sectioninfo.left != nextsectioninfo.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
                             else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
                         }
 
                         else if(dict[lenDict[i-1]] == "DOWN"){
-                            if(sectioninfo.left != head.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
-                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
+                            if(sectioninfo.left != nextsectioninfo.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "DOWN"}
                         }
                         else if (dict[lenDict[i-1]] == "RIGHT"){
-                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                            if(sectioninfo.top != nextsectioninfo.top){console.log("00");section.style.top = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`}
+                            else{section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "RIGHT"}
                         }
                         
 
@@ -252,13 +255,14 @@ function movementRight() {
                             else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
                         }
                         else if (tracker == "RIGHT"){
+                            if(sectioninfo.top != head.top){section.style.top = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`}
                             section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
-                        }
                     }
+                }
                     else{
                         nextsectioninfo = window.getComputedStyle(document.getElementById(lenDict[i-1]))
                         if(dict[lenDict[i-1]] == "UP"){
-                            if(sectioninfo.left != nextsection.left){sectioninfo.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
+                            if(sectioninfo.left != nextsection.left){section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
                             else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`; dict[lenDict[i]] = "UP"}
                         }
 
@@ -267,27 +271,17 @@ function movementRight() {
                             else{section.style.top  = `${parseInt(sectioninfo.top.replace(/px/g,""))+1}px`; dict[lenDict[i]] = "UP"}
                         }
                         else if (dict[lenDict[i-1]] == "RIGHT"){
-                            section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`
+                            if(sectioninfo.top != nextsectioninfo.top){section.style.top = `${parseInt(sectioninfo.top.replace(/px/g,""))-1}px`}
+                            else{section.style.left = `${parseInt(sectioninfo.left.replace(/px/g,""))+1}px`}
                         }
                         
 
-                        }
+                        
                     break;
               }
             }
 
-    /**
-     * for(ar of arr ){
-        newAr = window.getComputedStyle(ar)
-        ar.style.left = parseInt(newAr.left.slice(0,-2)) + 1 + "px";}
-
-    rect = obje.getBoundingClientRect();
-    if(y <=120 && y >=80 && x<=120 && x>=80){document.createElement("p")}; 
-    if(rect.left === 1110){clearInterval(currentInterval); gameon = false}
-     * 
-     */
-    
-
+    }
 }
 
 function movementLeft() {
@@ -302,29 +296,3 @@ function movementLeft() {
     
     
 } 
-
-
-// there should be an order for when each block moves, 
-
-
-// TODO
-// Allow fruit to be picked up from all directions
-// Figure out how to append to snake and move
-
-
-/* 
-
-if(R or L){
-    if(y not same){
-        match y position
-    }
-    match x position
-if(U or D)){
-    if(x not same){
-        match x position
-    }
-    match y
-}
-
-        */ 
-
