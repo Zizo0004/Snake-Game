@@ -117,6 +117,15 @@ document.addEventListener("keydown", (e) => {
     
     if(gameon==true){obje.style.top=`${y}px`;} // movement continues if no collisions
 
+    if(positions.length>=1){ // game ends once head touches other blocks
+        for(let f=0; f<=positions.length-1; f++){
+            if(parseInt((positions[f][0]).replace(/px/g,"")) == Nextheadleft && parseInt(positions[f][1].replace(/px/g,"")) == Nextheadtop){
+                gameon=false
+                clearInterval(currentInterval)
+            }
+        }
+    } 
+
     Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
     Nextheadtop  = parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))
 
@@ -181,7 +190,14 @@ function movementDown() {
     
     if(gameon==true){obje.style.top=`${y}px`;} // movement continues if no collisions
 
-
+    if(positions.length>=1){ // game ends once head touches other blocks
+        for(let f=0; f<=positions.length-1; f++){
+            if(parseInt((positions[f][0]).replace(/px/g,"")) == Nextheadleft && parseInt(positions[f][1].replace(/px/g,"")) == Nextheadtop){
+                gameon=false
+                clearInterval(currentInterval)
+            }
+        }
+    } 
 
     Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
     Nextheadtop  = parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))
@@ -240,23 +256,15 @@ function movementRight() {
     if(x >= 1852){clearInterval(currentInterval);gameon=false} // game ends once border is hit
     
     if(gameon==true){obje.style.left=`${x}px`;} // movement continues if no collisions
-    console.log(0<=positions.length-1)
-    console.log(positions.length)
-
+   
     if(positions.length>=1){ // game ends once head touches other blocks
-        console.log("AR")
-        for(let f=0; f<=positions-1; f++){
-            console.log("IN")
-            console.log(positions[f])
-            console.log(parseInt(window.getComputedStyle(positions[f][0]).replace(/px/g,"")))
-            if(parseInt(window.getComputedStyle(positions[f][0]).replace(/px/g,"")) == Nextheadleft 
-            && parseInt(window.getComputedStyle(positions[f][1]).replace(/px/g,"")) == Nextheadtop){
-                console.log("AHHHHHHHH")
+        for(let f=0; f<=positions.length-1; f++){
+            if(parseInt((positions[f][0]).replace(/px/g,"")) == Nextheadleft && parseInt(positions[f][1].replace(/px/g,"")) == Nextheadtop){
                 gameon=false
                 clearInterval(currentInterval)
             }
         }
-    }
+    } 
 
 
     Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
@@ -319,6 +327,15 @@ function movementLeft() {
    if(x <= 25){clearInterval(currentInterval);gameon=false} // game ends once border is hit
     
    if(gameon==true){obje.style.left=`${x}px`;} // movement continues if no collisions
+
+   if(positions.length>=1){ // game ends once head touches other blocks
+    for(let f=0; f<=positions.length-1; f++){
+        if(parseInt((positions[f][0]).replace(/px/g,"")) == Nextheadleft && parseInt(positions[f][1].replace(/px/g,"")) == Nextheadtop){
+            gameon=false
+            clearInterval(currentInterval)
+        }
+    }
+} 
    
 
    Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
