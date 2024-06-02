@@ -1,6 +1,7 @@
- x = 290; // intial position of head
+ x = 298; // intial position of head
  y = 310;
 
+counter = 0 
  var newElement = 0
  currentInterval = null; // Track the currently active interval
 tracker = null
@@ -16,11 +17,15 @@ for(let q=0; q<=1319;q++){
 allDivs = document.querySelectorAll("div")
 
 
-obje.style.left = "292px"
-obje.style.top  = "314px"
+obje.style.left = "298px"
+obje.style.top  = "310px"
+
+// left = 25px
+// right = 1852px
+// top = 93px
+// bottom = 805px
 
 
-allDivs[100].style.backgroundColor = "black";
 obje.style.width = `${allDivs[400].getBoundingClientRect().width -4}px`
 obje.style.height = `${allDivs[400].getBoundingClientRect().height -4}px`
 
@@ -32,7 +37,7 @@ document.addEventListener("keydown", (e) => {
                 if(tracker == "DOWN"){ currentInterval = setInterval(movementDown, 65); }
                 else{
                     tracker = "UP"
-                    currentInterval = setInterval(movementTop, 65);   
+                    currentInterval = setInterval(movementTop, 85);   
                    
                 }
                 break;
@@ -41,20 +46,20 @@ document.addEventListener("keydown", (e) => {
                    
                 }
                     else{tracker = "DOWN"
-                    currentInterval = setInterval(movementDown, 65);
+                    currentInterval = setInterval(movementDown, 85);
                 }
                 break;
             case "ArrowRight":
                 if(tracker == "LEFT"){currentInterval = setInterval(movementLeft, 65);}
                 else{tracker = "RIGHT"
-                    currentInterval = setInterval(movementRight, 65);
+                    currentInterval = setInterval(movementRight, 85);
                     break;}
                 break;
 
             case "ArrowLeft":
                 if(tracker == "RIGHT"){ currentInterval = setInterval(movementRight, 65);}
                     else{tracker = "LEFT"
-                    currentInterval = setInterval(movementLeft, 65);}
+                    currentInterval = setInterval(movementLeft, 85);}
                 break;
             
             default:
@@ -77,8 +82,8 @@ document.addEventListener("keydown", (e) => {
     }
 });
  var apple = document.getElementById("food")
- intialpositionX = Math.round(allDivs[100].getBoundingClientRect().left); // Initial position of apple
- intialpositionY = Math.round(allDivs[100].getBoundingClientRect().top);
+ intialpositionX = Math.round(allDivs[10].getBoundingClientRect().left); // Initial position of apple
+ intialpositionY = Math.round(allDivs[10].getBoundingClientRect().top);
 
  apple.style.left = `${intialpositionX}px`
  apple.style.top = `${intialpositionY}px`
@@ -89,40 +94,57 @@ document.addEventListener("keydown", (e) => {
   Left  = parseInt(computedStyle.left.slice(0,-2))
   Top  = parseInt(computedStyle.top.slice(0,-2))
  
-  appleleft = parseInt(window.getComputedStyle(apple).left.replace(/px/g,""))
-  appletop = parseInt(window.getComputedStyle(apple).top.replace(/px/g,""))
 
-  console.log(appleleft,appletop)
 
 
 
  positions = []
  blocks = []
+// left = 25px
+// right = 1852px
+// top = 93px
+// bottom = 805px
 
  function movementTop() {
     headLeft = `${parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))}px`
     headTop  = `${parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))}px`
 
+    appleleft = parseInt(window.getComputedStyle(apple).left.replace(/px/g,""))
+    appletop = parseInt(window.getComputedStyle(apple).top.replace(/px/g,""))
 
-    headLeftDetect = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
-    headTopDetect  = parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))
     y = y - allDivs[400].getBoundingClientRect().height;
-    obje.style.top=`${y}px`;
+    if(y <= 94){clearInterval(currentInterval);gameon=false} // game ends once border is hit
+    
+    if(gameon==true){obje.style.top=`${y}px`;} // movement continues if no collisions
 
     Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
     Nextheadtop  = parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))
 
-    console.log(`head x: ${Nextheadleft}, apple x: ${appleleft}, head y: ${Nextheadtop}, apple y: ${appletop}`);
-   console.log(`Difference x: ${Math.abs(Nextheadleft - appleleft)}, Difference y: ${Math.abs(Nextheadtop - appletop)}`);
+    const randomInt = Math.floor(Math.random() * 991) + 10;
 
-   console.log(y)
+
 
     if ((Nextheadleft - 10) <= appleleft && (Nextheadleft + 10) >= appleleft && 
-        (Nextheadtop - 10) <= appletop && (Nextheadtop + 10) >= appletop) {
-        console.log("Collision detected");
-        alert("Collision detected");
-        apple.style.display = `none`;
+        (Nextheadtop - 10) <= (appletop-6) && (Nextheadtop + 10) >= (appletop-6) ) {
+        counter++
+        score = document.querySelector("h2");
+        score.innerText =`${counter}` ;
+
+        newBlock = document.createElement("p")
+        newBlock.style.width = `${allDivs[400].getBoundingClientRect().width -4}px`
+        newBlock.style.height = `${allDivs[400].getBoundingClientRect().height -4}px`
+
+        blocks.push(newBlock)
+        positions.push(["",""])
+        document.body.appendChild(newBlock)
+        
+        
+        apple.style.left = `${allDivs[randomInt].getBoundingClientRect().left}px`
+        apple.style.top = `${allDivs[randomInt].getBoundingClientRect().top}px`
+
     }
+
+    if(gameon==true){
     for(let x = positions.length - 1; x >= 0; x--){
         if(x == 0){
             positions[0][0] = headLeft
@@ -143,6 +165,7 @@ document.addEventListener("keydown", (e) => {
         else{
         blocks[i].style.left = positions[i][0]
         blocks[i].style.top = positions[i][1] 
+                }
             }
         }
     }
@@ -153,20 +176,37 @@ function movementDown() {
     headLeft = `${parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))}px`
     headTop  = `${parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))}px`
     y = y + allDivs[400].getBoundingClientRect().height;
-    obje.style.top=`${y}px`
+
+    if(y >= 805){clearInterval(currentInterval);gameon=false} // game ends once border is hit
+    
+    if(gameon==true){obje.style.top=`${y}px`;} // movement continues if no collisions
+
+
 
     Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
     Nextheadtop  = parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))
 
+    appleleft = parseInt(window.getComputedStyle(apple).left.replace(/px/g,""))
+    appletop = parseInt(window.getComputedStyle(apple).top.replace(/px/g,""))
 
-    if(90 <= Nextheadleft && Nextheadleft <= 120 && 90 <= Nextheadtop && Nextheadtop <= 120){
+ 
+    if ((Nextheadleft - 10) <= appleleft && (Nextheadleft + 10) >= appleleft && 
+        (Nextheadtop - 10) <= (appletop-6) && (Nextheadtop + 10) >= (appletop-6) ) {
+        counter++
+        score = document.querySelector("h2");
+        score.innerText =`${counter}` ;
+
         newBlock = document.createElement("p")
+        newBlock.style.width = `${allDivs[400].getBoundingClientRect().width -4}px`
+        newBlock.style.height = `${allDivs[400].getBoundingClientRect().height -4}px`
+
         blocks.push(newBlock)
         positions.push(["",""])
-        document.body.appendChild(newBlock);
+        document.body.appendChild(newBlock)
     }
 
-    
+
+    if(gameon==true){
     for(let x = positions.length - 1; x >= 0; x--){
         if(x == 0){
             positions[0][0] = headLeft
@@ -189,7 +229,7 @@ function movementDown() {
         blocks[i].style.top = positions[i][1] 
             }
         }
-
+    }
 }
 
 function movementRight() {
@@ -197,15 +237,51 @@ function movementRight() {
     headTop  = `${parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))}px`
 
     x = x + allDivs[400].getBoundingClientRect().width;
-    obje.style.left=`${x}px`
+    if(x >= 1852){clearInterval(currentInterval);gameon=false} // game ends once border is hit
+    
+    if(gameon==true){obje.style.left=`${x}px`;} // movement continues if no collisions
+    console.log(0<=positions.length-1)
+    console.log(positions.length)
+
+    if(positions.length>=1){ // game ends once head touches other blocks
+        console.log("AR")
+        for(let f=0; f<=positions-1; f++){
+            console.log("IN")
+            console.log(positions[f])
+            console.log(parseInt(window.getComputedStyle(positions[f][0]).replace(/px/g,"")))
+            if(parseInt(window.getComputedStyle(positions[f][0]).replace(/px/g,"")) == Nextheadleft 
+            && parseInt(window.getComputedStyle(positions[f][1]).replace(/px/g,"")) == Nextheadtop){
+                console.log("AHHHHHHHH")
+                gameon=false
+                clearInterval(currentInterval)
+            }
+        }
+    }
+
 
     Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
     Nextheadtop  = parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))
 
+    appleleft = parseInt(window.getComputedStyle(apple).left.replace(/px/g,""))
+    appletop = parseInt(window.getComputedStyle(apple).top.replace(/px/g,""))
 
-    if(90 <= Nextheadleft && Nextheadleft <= 120 && 90 <= Nextheadtop && Nextheadtop <= 120){apple.style.display = `none`}
+   
+    if ((Nextheadleft - 10) <= appleleft && (Nextheadleft + 10) >= appleleft && 
+        (Nextheadtop - 10) <= (appletop-6) && (Nextheadtop + 10) >= (appletop-6) ) {
+        counter++
+        score = document.querySelector("h2");
+        score.innerText =`${counter}` ;
 
+        newBlock = document.createElement("p")
+        newBlock.style.width = `${allDivs[400].getBoundingClientRect().width -4}px`
+        newBlock.style.height = `${allDivs[400].getBoundingClientRect().height -4}px`
 
+        blocks.push(newBlock)
+        positions.push(["",""])
+        document.body.appendChild(newBlock)
+    }
+
+    if(gameon == true){
     for(let x = positions.length - 1; x >= 0; x--){
         if(x == 0){
             positions[0][0] = headLeft
@@ -229,7 +305,7 @@ function movementRight() {
         blocks[i].style.top = positions[i][1] 
             }
         }
-
+    }
 }
 
 function movementLeft() {
@@ -239,12 +315,34 @@ function movementLeft() {
    headLeft = `${parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))}px`
    headTop  = `${parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))}px`
    x = x - allDivs[400].getBoundingClientRect().width;
-   obje.style.left=`${x}px`
+
+   if(x <= 25){clearInterval(currentInterval);gameon=false} // game ends once border is hit
+    
+   if(gameon==true){obje.style.left=`${x}px`;} // movement continues if no collisions
+   
 
    Nextheadleft = parseInt(window.getComputedStyle(obje).left.replace(/px/g,""))
     Nextheadtop  = parseInt(window.getComputedStyle(obje).top.replace(/px/g,""))
 
-    if(90 <= Nextheadleft && Nextheadleft <= 120 && 90 <= Nextheadtop && Nextheadtop <= 120){apple.style.display = `none`}
+    appleleft = parseInt(window.getComputedStyle(apple).left.replace(/px/g,""))
+    appletop = parseInt(window.getComputedStyle(apple).top.replace(/px/g,""))
+
+    
+    if ((Nextheadleft - 10) <= appleleft && (Nextheadleft + 10) >= appleleft && 
+        (Nextheadtop - 10) <= (appletop-6) && (Nextheadtop + 10) >= (appletop-6) ) {
+        counter++
+        score = document.querySelector("h2");
+        score.innerText =`${counter}` ;
+
+        newBlock = document.createElement("p")
+        newBlock.style.width = `${allDivs[400].getBoundingClientRect().width -4}px`
+        newBlock.style.height = `${allDivs[400].getBoundingClientRect().height -4}px`
+
+        blocks.push(newBlock)
+        positions.push(["",""])
+        document.body.appendChild(newBlock)
+    }
+    if(gameon==true){
    for(let x = positions.length - 1; x >= 0; x--){
     if(x == 0){
         positions[0][0] = headLeft
@@ -268,4 +366,5 @@ function movementLeft() {
        blocks[i].style.top = positions[i][1] 
         }
     }
+  }
 } 
